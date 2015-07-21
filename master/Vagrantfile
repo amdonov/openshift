@@ -1,0 +1,43 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+# All Vagrant configuration is done below. The "2" in Vagrant.configure
+# configures the configuration version (we support older styles for
+# backwards compatibility). Please don't change it unless you know what
+# you're doing.
+Vagrant.configure(2) do |config|
+  # The most common configuration options are documented and commented below.
+  # For a complete reference, please see the online documentation at
+  # https://docs.vagrantup.com.
+
+  # Start with a CentOS 7.1 box
+  config.vm.box = "chef/centos-7.1"
+  
+  # Add private network
+  config.vm.network "private_network", ip: "192.168.56.10"
+  
+  # Avoid problems with Booz Allen Web Gateway
+  config.vm.box_download_insecure = true
+
+  # Configure Virtual Box VM
+  #
+  config.vm.provider "virtualbox" do |vb|
+    #vb.memory = "1536"
+	vb.memory = "4608"
+	vb.name = "master"
+
+    # Create and attach disk
+    unless File.exist?('docker.vdi')
+      vb.customize ['createhd', '--filename', 'docker.vdi', '--format', 'VDI', '--size', 30 * 1024]
+    end
+    vb.customize ['storageattach', :id, '--storagectl', 'SATA Controller', '--port', 1, '--device', 0, '--type', 'hdd', '--medium', 'docker.vdi']
+  
+  end
+
+
+   # Accept Booz Allen Certificates for the ever-annoying gateway
+   config.vm.provision "shell", path: "../booz.sh"
+  
+   # Install openshift prereqs
+   config.vm.provision "shell", path: "../openshift.sh", args: ['master']
+end
