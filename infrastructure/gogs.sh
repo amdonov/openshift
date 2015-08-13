@@ -1,5 +1,5 @@
 useradd git
-curl -o /home/git/gogs.zip http://gogs.dn.qbox.me/gogs_v0.6.1_linux_amd64.zip
+curl -o /home/git/gogs.zip http://gogs.dn.qbox.me/gogs_v0.6.3_linux_amd64.zip
 yum install -y unzip
 unzip /home/git/gogs.zip -d /home/git
 chown -R git.git /home/git/gogs
