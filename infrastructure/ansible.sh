@@ -4,7 +4,7 @@ yum -y --enablerepo=epel install ansible git
 cd ~
 git clone https://github.com/openshift/openshift-ansible
 cd openshift-ansible
-git checkout 3.0.0-8
+git checkout v3.0.0-8
 cat > /etc/ansible/hosts << EOF
 # Create a group that contains the masters and nodes groups
 [OSEv3:children]
